@@ -1,0 +1,84 @@
+Author: -   Anicet SIEWE KOUETA
+		-   Regine MAKONGA
+
+
+
+		
+		
+=====================
+Mutation-based fuzzer
+=====================
+
+	=====================
+	CONTENT
+	=====================
+
+	Folder Project1 contains  5 sub folders:
+	- 	Sub folder attack_file/ :contains the 5 attack files
+
+		• inputFile_attack_N0_Height.img		: crash the converter program by changing the height values
+		• inputFile_attack_N1_ColorTables.img	: crash the converter program by changing the ColorTables values
+		• inputFile_attack_N2_author+width.img	: crash the converter program by changing the author values and width values
+		• inputFile_attack_N3.img’				: crash the converter program by changing the ColorTables values
+		• inputFile_attack_N3.img     			: crash the converter program by changing the ColorTables values
+
+	-	Sub folder out/ contains  3 sub folders :
+
+		• FileCrash/:	contains all '.img' files that crash the program during its execution
+		• FileLog/	:	contains all log of bytes that have been changed and their values in unsigned decimal
+		• FileTest/ :	contains all the '.img' files that were used to test the program during its execution
+
+	-	Sub folder src/ : containing initially source codes
+	
+		• fuzzer1.c     : source code of Mutation-based fuzzer
+		• fuzzer2.c     : source code of Generation-based fuzzer 
+		• FUZZER1       : compiled version of fuzzer1.c
+		• FUZZER2       : compiled version of fuzzer2.c 
+		• Converter     : program initially given for test purposes
+		• testinput.img : input file for test purposes
+		• testoutput.img : output file for test purposes
+		
+		
+	=====================
+	EXECUTION.
+	=====================
+	
+	In order to execute the program:
+	1)	Go to  src/
+	
+	2)	
+		To avoid, compiler errors about missing functions. You had to compile by creating a link to the math library when compiling. 
+		This is done by passing the "-lm" a gcc option. The reason for this is that the math library is not linked by default because 
+		for many system programs it is not necessary.
+		Compile the program to be executed  with gcc : "gcc input_file -o outputfile -lm"
+		For instance, 
+			• fuzto compile fuzzer1 run "gcc myfuzzer1.c –o MYFUZZER1 -lm"
+			• fuzto compile fuzzer2 run "gcc myfuzzer2.c –o MYFUZZER2 -lm"
+			
+	3)	Launch the generated program 
+	-	For FUZZER1 : #./MYFUZZER1 input_file number_of_tests percentage
+			For example : #./MYFUZZER1 testinput.img 200 0.05
+		
+			Constraints : 
+				• l’argument_1 (Testinput.img) should be an iput string 
+				• L’argument_2 (200) should be greater > 0
+				• L’argument_2 (200) should be greater > 0
+				• L’argument_3 (100) should be greater > 0
+				• L’argument_4 (0.01) must be an integer between [0.0 et 1.0].
+				
+	-	for FUZZER2 : #./MYFUZZER2 number_of_generated_file
+			For example : #./FUZZER2 17
+			
+			Constraints : 
+				• L’argument_1 (200) should be greater > 0
+
+
+		Versions of program-crashing image file
+		--------------------------------------- 
+
+		Off limit <height> field value I.e value > 256
+		For instance when, modifying the 10th byte of the program  so that that the height value becomes 10 00 64 00 in  Little-Endian, 
+		and  6553601 in decimal.
+		
+		Off limit <numcolors> value i.e value > than 256 in decimal, makes the program bug.
+	
